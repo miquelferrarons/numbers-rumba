@@ -5,6 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Colors Rumba</title>
     <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .combination-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
         .combination {
             display: flex;
             justify-content: space-around;
@@ -25,13 +37,99 @@
             justify-content: center;
             margin: 0 5px;
         }
+
+        .mirrored .cube {
+            transform: rotate(180deg);
+        }
+
+        .black-line {
+            width: 100%;
+            height: 2px;
+            background-color: #000;
+            margin: 20px 0;
+        }
     </style>
 </head>
 <body>
-    <button onclick="generateCombination()">Generar Nova Combinació</button>
+    <div class="combination-container">
+        <div class="combination" id="combination"></div>
+        <div class="black-line"></div>
+        <div class="combination mirrored" id="mirroredCombination"></div>
+    </div>
 
-    <div class="combination" id="combination"></div>
+    <script>
+        const uniqueCubes = [
+            '1 red', '2 red', '3 red',
+            '1 blue', '2 blue', '3 blue',
+            '1 white', '2 white', '3 white'
+        ];
 
-    <script src="script.js"></script>
+        let currentCombination = [];
+        let mirroredCombination = [];
+
+        function generateCombination() {
+            const combinationDiv = document.getElementById('combination');
+            combinationDiv.innerHTML = '';
+
+            currentCombination = uniqueCubes.slice();
+            const shuffledCombination = shuffleArray(currentCombination.slice());
+
+            for (let i = 0; i < 3; i++) {
+                const columnDiv = document.createElement('div');
+                columnDiv.className = 'column';
+
+                for (let j = 0; j < 3; j++) {
+                    const cube = document.createElement('div');
+                    cube.className = 'cube';
+
+                    const currentCube = shuffledCombination[i * 3 + j].split(' ');
+                    cube.style.backgroundColor = currentCube[1].toLowerCase();
+                    cube.innerText = currentCube[0];
+
+                    columnDiv.appendChild(cube);
+                }
+
+                combinationDiv.appendChild(columnDiv);
+            }
+
+            // Create a mirrored version
+            mirroredCombination = shuffledCombination.slice().reverse();
+            const mirroredCombinationDiv = document.getElementById('mirroredCombination');
+            mirroredCombinationDiv.innerHTML = '';
+
+            for (let i = 0; i < 3; i++) {
+                const columnDiv = document.createElement('div');
+                columnDiv.className = 'column';
+
+                for (let j = 0; j < 3; j++) {
+                    const cube = document.createElement('div');
+                    cube.className = 'cube';
+
+                    const mirroredCube = mirroredCombination[i * 3 + j].split(' ');
+                    cube.style.backgroundColor = mirroredCube[1].toLowerCase();
+                    cube.innerText = mirroredCube[0];
+
+                    columnDiv.appendChild(cube);
+                }
+
+                mirroredCombinationDiv.appendChild(columnDiv);
+            }
+        }
+
+        function shuffleCombination() {
+            generateCombination();
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // Initial combination generation on page load
+        generateCombination();
+    </script>
 </body>
 </html>
