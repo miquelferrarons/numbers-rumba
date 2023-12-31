@@ -6,15 +6,19 @@
     <title>Colors Rumba</title>
     <style>
         body {
+            background-color: #f0f0f0;
             display: flex;
             flex-direction: column;
             align-items: center;
+            font-family: Arial, sans-serif;
+            margin: 0;
         }
 
         .combination-container {
             display: flex;
             flex-direction: column;
             align-items: center;
+            margin-top: 20px;
         }
 
         .combination {
@@ -36,6 +40,18 @@
             align-items: center;
             justify-content: center;
             margin: 0 5px;
+            font-weight: bold;
+            font-size: 1.2em;
+            border-radius: 8px; /* Rounded borders */
+        }
+
+        .orange {
+            background-color: orange;
+        }
+
+        .blue {
+            background-color: blue;
+            color: white;
         }
 
         .mirrored .cube {
@@ -52,14 +68,14 @@
 </head>
 <body>
     <div class="combination-container">
-        <div class="combination" id="combination"></div>
-        <div class="black-line"></div>
         <div class="combination mirrored" id="mirroredCombination"></div>
+        <div class="black-line"></div>
+        <div class="combination" id="combination"></div>
     </div>
 
     <script>
         const uniqueCubes = [
-            '1 red', '2 red', '3 red',
+            '1 orange', '2 orange', '3 orange',
             '1 blue', '2 blue', '3 blue',
             '1 white', '2 white', '3 white'
         ];
@@ -80,11 +96,10 @@
 
                 for (let j = 0; j < 3; j++) {
                     const cube = document.createElement('div');
-                    cube.className = 'cube';
-
-                    const currentCube = shuffledCombination[i * 3 + j].split(' ');
-                    cube.style.backgroundColor = currentCube[1].toLowerCase();
-                    cube.innerText = currentCube[0];
+                    const cubeClass = shuffledCombination[i * 3 + j].includes('orange') ? 'orange' :
+                                      shuffledCombination[i * 3 + j].includes('blue') ? 'blue' : '';
+                    cube.className = `cube ${cubeClass}`;
+                    cube.innerText = shuffledCombination[i * 3 + j].split(' ')[0];
 
                     columnDiv.appendChild(cube);
                 }
@@ -103,11 +118,10 @@
 
                 for (let j = 0; j < 3; j++) {
                     const cube = document.createElement('div');
-                    cube.className = 'cube';
-
-                    const mirroredCube = mirroredCombination[i * 3 + j].split(' ');
-                    cube.style.backgroundColor = mirroredCube[1].toLowerCase();
-                    cube.innerText = mirroredCube[0];
+                    const mirroredCubeClass = mirroredCombination[i * 3 + j].includes('orange') ? 'orange' :
+                                              mirroredCombination[i * 3 + j].includes('blue') ? 'blue' : '';
+                    cube.className = `cube ${mirroredCubeClass} mirrored`;
+                    cube.innerText = mirroredCombination[i * 3 + j].split(' ')[0];
 
                     columnDiv.appendChild(cube);
                 }
